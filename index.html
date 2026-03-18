@@ -43,7 +43,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="source/img/head.jpg" class="js-avatar">
+			<img src="/source/img/head.png" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/"></a></h1>
@@ -57,7 +57,7 @@
 	        
 				<li><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 	        
-				<li><a href="/%E7%9F%A5%E8%AF%86%E5%88%86%E7%B1%BB/">分类</a></li>
+				<li><a href="/categories/">分类</a></li>
 	        
 			</ul>
 		</nav>
@@ -99,7 +99,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="source/img/head.jpg" class="js-avatar">
+				<img src="/source/img/head.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author"></h1>
@@ -133,7 +133,7 @@
 		        
 					<li style="width: 33.333333333333336%"><a href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
 		        
-					<li style="width: 33.333333333333336%"><a href="/%E7%9F%A5%E8%AF%86%E5%88%86%E7%B1%BB/">分类</a></li>
+					<li style="width: 33.333333333333336%"><a href="/categories/">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -150,8 +150,99 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h2 id="title-常用数据结构tags-随笔"><a href="#title-常用数据结构tags-随笔" class="headerlink" title="title:常用数据结构tags:随笔"></a>title:常用数据结构<br>tags:随笔</h2><h1 id="常用数据结构"><a href="#常用数据结构" class="headerlink" title="常用数据结构"></a>常用数据结构</h1><h2 id="java写算法中常用的方法"><a href="#java写算法中常用的方法" class="headerlink" title="java写算法中常用的方法"></a>java写算法中常用的方法</h2><h3 id="HashMap中常用的方法"><a href="#HashMap中常用的方法" class="headerlink" title="HashMap中常用的方法"></a>HashMap中常用的方法</h3><ul>
+<li><p>[题目](<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum/">1. 两数之和 - 力扣（LeetCode）</a>)</p>
+</li>
+<li><p>[题目](<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-good-pairs/">1512. 好数对的数目 - 力扣（LeetCode）</a>)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//把key和value存入到哈希表中</span></span><br><span class="line">map.put(key,value);</span><br><span class="line"></span><br><span class="line"><span class="comment">//检查哈希表中是否存在某个键key</span></span><br><span class="line"><span class="comment">//返回值是true或false</span></span><br><span class="line">map.containsKey(key);</span><br><span class="line"></span><br><span class="line"><span class="comment">//根据键获取对应的值</span></span><br><span class="line"><span class="comment">//例如</span></span><br><span class="line"><span class="comment">//idx.put(3,0);键是3，值是0</span></span><br><span class="line"><span class="comment">//idx.get(3);//那么键是3，获取到的值是0</span></span><br><span class="line">map.get(key);</span><br><span class="line"></span><br><span class="line"><span class="comment">//根据键获取对应的value值，如果键不存在则返回默认值</span></span><br><span class="line">map.getOrDegault(key, defaultValue);</span><br><span class="line"></span><br><span class="line"><span class="comment">//统计数组中每个元素出现的次数</span></span><br><span class="line"><span class="comment">//x是key，表示要统计的元素</span></span><br><span class="line"><span class="comment">//1表示默认增量，如果在哈希表中不存在，就存入值1，表示第一次出现</span></span><br><span class="line"><span class="comment">//Integer::sum</span></span><br><span class="line"><span class="comment">//是一个合并函数</span></span><br><span class="line"><span class="comment">//总结</span></span><br><span class="line"><span class="comment">//判断x是否存在，不存在，把x插入到map中，value设置成1，效果和map.put(x,1)一样，如果x已经存在，那么就执行合并函数，将旧的value值+1然后更新哈希表中x对应的旧value值，更新成新的value值</span></span><br><span class="line">map.merge(x, <span class="number">1</span>, Integer::sum);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回的是HashMap中key的个数</span></span><br><span class="line">map.size();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回的是哈希表中的value值，返回的是一个集合数据类型的</span></span><br><span class="line">map.values();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="List集合中常用的方法"><a href="#List集合中常用的方法" class="headerlink" title="List集合中常用的方法"></a>List集合中常用的方法</h3><p>&#x3D;&#x3D;LinkedList和ArrayList&#x3D;&#x3D;</p>
+<p>- </p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取数组中指定位置的元素的值</span></span><br><span class="line">list.get(<span class="type">int</span> index);</span><br><span class="line"></span><br><span class="line"><span class="comment">//返回数组中元素的个数，就是数组的长度</span></span><br><span class="line"><span class="comment">//相对于数组中nums.length</span></span><br><span class="line">list.size();</span><br><span class="line"></span><br><span class="line"><span class="comment">//添加元素到末尾</span></span><br><span class="line"><span class="comment">//把元素5插入到数组的末尾位置</span></span><br><span class="line"><span class="comment">//例如：list.add(5);</span></span><br><span class="line">list.add(E e);</span><br><span class="line"></span><br><span class="line"><span class="comment">//添加元素到数组中的指定位置</span></span><br><span class="line"><span class="comment">//把元素5添加到0位置</span></span><br><span class="line"><span class="comment">//例如：list.add(0, 5);</span></span><br><span class="line">list.add(<span class="type">int</span> i, E e);</span><br><span class="line"></span><br><span class="line"><span class="comment">//删除指定位置元素</span></span><br><span class="line"><span class="comment">//删除数组中0位置的元素</span></span><br><span class="line"><span class="comment">//例如:list.remove(0)</span></span><br><span class="line">list.remove(<span class="type">int</span> i);</span><br><span class="line"></span><br><span class="line"><span class="comment">//修改指定位置的元素</span></span><br><span class="line"><span class="comment">//把0位置的元素修改为10</span></span><br><span class="line"><span class="comment">//例如：list.set(0, 10);</span></span><br><span class="line">list.set(<span class="type">int</span> i, E e);</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断数组中是否包含某个元素</span></span><br><span class="line">list.contains(Object o);</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断这个数组是否为空</span></span><br><span class="line">list.isEmpty();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="String中常用的方法"><a href="#String中常用的方法" class="headerlink" title="String中常用的方法"></a>String中常用的方法</h3>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">查找字符ch在字符串string中第一次出现的下标，即处于最左边的字符ch的下标，下标从0开始计算，没有就返回-1</span></span><br><span class="line"><span class="comment">例如&quot;abca&quot;，如果ch=&#x27;a&#x27;，那么返回的是0</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">string.indexOf(<span class="type">int</span> ch);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">返回字符ch在字符串string中最右边的字符的下标，即最后一个ch字符的下标</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">string.lastIndexOf(<span class="type">int</span> ch);</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="增强for循环"><a href="#增强for循环" class="headerlink" title="增强for循环"></a>增强for循环</h3><p>&#x3D;&#x3D;业务开发中不要写，算法中可以写，因为开发中要求可读性高&#x3D;&#x3D;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>[][] DIRS = &#123;&#123;<span class="number">0</span>, <span class="number">1</span>&#125;, &#123;<span class="number">0</span>, -<span class="number">1</span>&#125;, &#123;<span class="number">1</span>, <span class="number">0</span>&#125;, &#123;-<span class="number">1</span>, <span class="number">0</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 传统写法：使用索引 i 从 0 遍历到数组长度 - 1</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; DIRS.length; i++) &#123;</span><br><span class="line">    <span class="type">int</span>[] d = DIRS[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//增强for循环写法</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span>[] d : DIRS)&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="数组的排序操作sort"><a href="#数组的排序操作sort" class="headerlink" title="数组的排序操作sort"></a>数组的排序操作sort</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数组，起始索引(闭区间)，结束索引(开区间)</span></span><br><span class="line"><span class="comment">// 对指定区间进行排序，没有指定的不做操作</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sort</span><span class="params">(<span class="type">int</span>[] a, <span class="type">int</span> fromIndex, <span class="type">int</span> toIndex)</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a和b是列表中任意两个待比较的元素</span></span><br><span class="line"><span class="comment">// a&gt;b 结果是正数，表示b在a前面，降序</span></span><br><span class="line"><span class="comment">// a&lt;b 结果是负数，表示a在b前面，升序</span></span><br><span class="line"><span class="comment">// a==b 结果是0，顺序不变</span></span><br><span class="line">(a, b) -&gt; b - a;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2026/03/18/%E7%AE%97%E6%B3%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-redis" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2026/03/18/redis/">什么是Redis</a>
+    </h1>
+  
+
+        
+        <a href="/2026/03/18/redis/" class="archive-article-date">
+  	<time datetime="2026-03-18T11:30:33.907Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-18</time>
+</a>
+        
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -439,6 +530,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -514,6 +616,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -660,6 +773,10 @@ MathJax.Hub.Queue(function() {
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
