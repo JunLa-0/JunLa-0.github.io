@@ -6,15 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2026 | JunLa.blog</title>
+  <title>JunLa.blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="什么是RedisRedis简介&#x3D;&#x3D;Redis是开源的键值对数据库服务器&#x3D;&#x3D;更准确地说Redis是数据结构服务器，它的性质比较特殊 Redis是一个内存数据库，作为真实数据库（例如：MySQL、PostageSQL），就是把数据存储到磁盘上前面的缓存如果不进行特定的操作不会把数据存到磁盘上,可以提高应用程序的性能 主要是通过内存的高速访问速度，从而可以减轻核心">
+<meta property="og:type" content="article">
 <meta property="og:title" content="JunLa.blog">
-<meta property="og:url" content="http://example.com/archives/2026/index.html">
+<meta property="og:url" content="http://example.com/2026/03/18/redis/index.html">
 <meta property="og:site_name" content="JunLa.blog">
+<meta property="og:description" content="什么是RedisRedis简介&#x3D;&#x3D;Redis是开源的键值对数据库服务器&#x3D;&#x3D;更准确地说Redis是数据结构服务器，它的性质比较特殊 Redis是一个内存数据库，作为真实数据库（例如：MySQL、PostageSQL），就是把数据存储到磁盘上前面的缓存如果不进行特定的操作不会把数据存到磁盘上,可以提高应用程序的性能 主要是通过内存的高速访问速度，从而可以减轻核心">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/redis%E5%85%AB%E8%82%A1.assets/image-20260309233943176.png">
+<meta property="og:image" content="http://example.com/redis%E5%85%AB%E8%82%A1.assets/image-20260314234842169.png">
+<meta property="og:image" content="http://example.com/redis%E5%85%AB%E8%82%A1.assets/image-20260315233626314.png">
+<meta property="article:published_time" content="2026-03-18T11:30:33.907Z">
+<meta property="article:modified_time" content="2026-03-18T11:32:10.049Z">
 <meta property="article:author" content="JunLa">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/redis%E5%85%AB%E8%82%A1.assets/image-20260309233943176.png">
   
     <link rel="alternative" href="/atom.xml" title="JunLa.blog" type="application/atom+xml">
   
@@ -148,70 +156,432 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-redis" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h1><h2 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h2><p>&#x3D;&#x3D;Redis是开源的键值对数据库服务器&#x3D;&#x3D;<br><code>更准确地说Redis是数据结构服务器，它的性质比较特殊</code></p>
+<p>Redis是一个内存数据库，作为<code>真实数据库（例如：MySQL、PostageSQL），就是把数据存储到磁盘上</code>前面的缓存<code>如果不进行特定的操作不会把数据存到磁盘上</code>,可以提高应用程序的性能</p>
+<p><u>主要是通过内存的高速访问速度，从而可以减轻核心应用程序数据库的负载</u></p>
+<p><strong>例如：</strong></p>
+<ul>
+<li>不经常修改但是经常被请求(查询访问)的数据</li>
+<li>任务关键性较低但是经常变动的数据</li>
+</ul>
+<p>**废话：**Redis在很多应用场景都适用，所以一般可以把它作为主数据库，而且加上Redis插件和Redis的各种高可用性HA设置，Redis作为数据库可以在某些场景和工作负载中变得很有用</p>
+<p><strong>Redis模糊了缓存和数据存储之间的界限，所以相比于SSD或HDD作为存储的传统数据库，读取和操作内存中数据的速度要快很多</strong></p>
+<p>初始的时候Redis和Memcached有很多相似的地方，但是Memcached略逊<br>&#x3D;&#x3D;两者对比&#x3D;&#x3D;<br><img src="/./redis%E5%85%AB%E8%82%A1.assets/image-20260309233943176.png" alt="image-20260309233943176"></p>
+<hr>
+<h2 id="Redis架构"><a href="#Redis架构" class="headerlink" title="Redis架构"></a>Redis架构</h2><p>在研究Redis内部结构之前，先讨论一下各种Redis部署及其权衡取舍</p>
+<p>主要的设置有：</p>
+<ul>
+<li>单个Redis实例</li>
+<li>Redis高可用性</li>
+<li>Redis哨兵</li>
+<li>Redis集群</li>
+</ul>
+<p>根据你的用例和规模决定使用哪一种设置</p>
+<h3 id="单个Redis实例"><a href="#单个Redis实例" class="headerlink" title="单个Redis实例"></a>单个Redis实例</h3><p>是最直接的Redis部署方式，允许用户设置和运行小型实例，可以快速发展和加速服务</p>
+<p>如果该实例失败或不可用，那么所有的客户端对Redis的调用都会失败，从而会降低系统的整体性能和速度</p>
+<p>如果有足够的内存和服务器资源，这个实例可以很强大，主要用于缓存的场景以最少的设置获取显著的性能提升</p>
+<p>发送Redis的命令首先会在内存中进行处理，然后如果这些实例上设置了持久化，则在某个时间间隔上会有一个fork进程，来生成数据持久化RDB快照或AOF</p>
+<p>这两个流程可以让Redis拥有长期存储，支持各种复制策略，并启用更复杂的拓扑</p>
+<p>如果Redis没有设置成持久化数据，那么重启或故障转移时都会导致数据丢失，如果在重启时启用了持久化那么就会将RDB快照或AOF中所有的数据加载回内存中，然后实例可以支持新的客户端请求</p>
+<h3 id="Redis高可用性"><a href="#Redis高可用性" class="headerlink" title="Redis高可用性"></a>Redis高可用性</h3><p>Redis高可用性的设置就是主从部署方式，从部署保持与主部署之间数据的同步</p>
+<p>当数据写入主实例中，它会将这些命令的副本同步发送给从部署客户端的输出缓冲区，达到数据同步的效果，从部署可以有一个或多个实例，那么这些实例就可以帮助拓展Redis的读取操作或提供障碍转移，用来防止main丢失</p>
+<p>此时Redis高可用性已经进入了一个分布式系统了，有主从了</p>
+<h3 id="Redis复制"><a href="#Redis复制" class="headerlink" title="Redis复制"></a>Redis复制</h3><p>Redis的每个主实例都有一个复制ID和一个偏移量，这两个东西对于确定副本可以继续其复制过程的时间点或确定副本是否需要进行完整同步非常重要</p>
+<blockquote>
+<p>人话就是</p>
+<p>确定副本能够继续它的复制过程的时间点<br>确定副本是否需要进行完整同步</p>
+<p>复制ID和偏移量非常重要</p>
+</blockquote>
+<p>对于主Redis部署上发生的每个操作，此偏移量都会增加</p>
+<p>当Redis副本实例仅落后于主实例几个偏移量的时候，副本实例就会接收剩余的命令然后再其数据集上重放，直到和主实例同步完成，如果两个实例无法同步那么就复制ID达成一致，或者主实例不知道偏移量，则副本将请求全量同步，这个时候主实例会创建一个新的RDB快照，并将其发送给副本</p>
+<p>在传输之间，主实例会缓冲快照截至和当前偏移之间的所有中间更新指令，在快照同步之后再把这些指令发送给副本实例，完成之后复制就可以正常继续了</p>
+<p>如果一个实例具有相同的复制ID和偏移量，则他们有完全相同的数据，当Redis实例(可能是主实例，也可能是副本实例)被提升为主实例或作为主实例从头开始重新启动时，这个Redis实例会被赋予一个新的复制ID，但是我们要去判断这个新提升的副本实例时从先前哪个主实例复制出来的，所以我们要获取原来的复制ID，运维新的主实例会记住其旧的复制ID</p>
+<p>知道以前的复制ID就可以推断如何使数据同步，因为能够判断它们的共享的共同祖先，并且偏移量对于部分同步再次有意义</p>
+<h3 id="Redis哨兵（Redis-Sentinel）"><a href="#Redis哨兵（Redis-Sentinel）" class="headerlink" title="Redis哨兵（Redis Sentinel）"></a>Redis哨兵（Redis Sentinel）</h3><p>哨兵就是一个分布式系统，和所有的分布式系统都是一样的，哨兵的设计方式是以协调状态进行协同工作，从而为Redis提供高可用性，因为哨兵是协同工作的，所以它们不会有自己的单点故障</p>
+<p>哨兵负责的事情</p>
+<ul>
+<li>确保主实例和从实例能够正常运行并且做出响应</li>
+<li>哨兵与其他哨兵进程在主节点或从节点丢失的情况下会发出警报并采取对应的行动</li>
+<li>在服务发现中也会发挥作用，当一个新的客户端尝试向Redis中写东西的时候哨兵就会告诉客户端当前的主实例是什么</li>
+<li>哨兵会不断监控可用性，把这些信息发送给客户端，能够在进行故障转移的时候做出响应</li>
+</ul>
+<p>总结哨兵职责</p>
+<ul>
+<li>监控——确保主从实例按预期工作</li>
+<li>通知——通知系统管理员Redis实例中的事件</li>
+<li>故障转移管理——如果主实例不可用并且有足够多的节点，那么哨兵就会进行故障转移</li>
+<li>配置管理——哨兵节点还会充当当前主Redis实例的发现服务</li>
+</ul>
+<h3 id="Redis集群（Redis-Cluster）"><a href="#Redis集群（Redis-Cluster）" class="headerlink" title="Redis集群（Redis Cluster）"></a>Redis集群（Redis Cluster）</h3><p>因为现在基本数据量都极大，所以不可能把所有的数据都存到一台机器上，那么使用Redis Cluster就是将要存储的这些数据分散到多台机器上进行存储，这叫分片。所有集群中的每个Redis实例都被认为是整个数据的切片，所以分片是有多个的</p>
+<p>因为有多个Redis实例（多个分片），那么如果我们想向集群中推送一个Key，Redis Cluster通过算法分片确定哪个Redis实例（分片）保存了该数据</p>
+<p>对key进行哈希处理，并通过对总分片数量取模，然后使用确定性哈希函数，来找到给定的key，这意味着给定的key始终会映射到同一个分片</p>
+<p>后续给系统中再添加一个新的分片，这个过程就叫 重新分片</p>
+<p>假设键‘for’在添加新的分片之前，他被映射到分片0，在引入新的分片之后可能会映射到其他分片，但是如果进行快速拓展系统分片，直接通过移动数据来进行添加新的分片，这样速度慢不切实际，且对Redis集群的可用性产生不利影响</p>
+<h3 id="Gossiping协议"><a href="#Gossiping协议" class="headerlink" title="Gossiping协议"></a>Gossiping协议</h3><p>Redis Cluster使用Gossiping来确定整个集群的健康状况</p>
+<hr>
+<h2 id="Redis持久化模型"><a href="#Redis持久化模型" class="headerlink" title="Redis持久化模型"></a>Redis持久化模型</h2><p>使用Redis存储任何数据类型的数据同时还要求安全保证，围绕数据持久性和恢复有一些保证</p>
+<h3 id="无持久化"><a href="#无持久化" class="headerlink" title="无持久化"></a>无持久化</h3><p>如果你不需要持久化操作，那么完全可以禁用持久化，不使用持久化是运行Redis鞥带最快方式，并且不会保证数据的持久性</p>
+<h3 id="RDB文件"><a href="#RDB文件" class="headerlink" title="RDB文件"></a>RDB文件</h3><p>RDB就是Redis数据库。</p>
+<p>RDB持久化：以指定的时间间隔执行数据集的时间点快照</p>
+<p>这种机制的缺点：快照之间的数据会丢失，而且这种存储机制还依赖于主进程fork，在更大的数据集中，这可能会导致服务请求的瞬间延迟</p>
+<p>但是，RDB文件在内存中的加载速度依旧要比AOF快很多</p>
+<h3 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h3><p>AOF：Append Omly File<br>AOF持久化记录服务器接收到的每个写入操作，这些操作将会在服务器启动的时候再次被执行，重建原始数据集</p>
+<p>AOF持久化比RDB快照更持久，因为他是一个仅附加文件，随着操作的发生，我们将它们缓冲到日志中，但它们还没有被持久化，该日志和我们运行的实际命令一致，以便在需要时进行重放</p>
+<h3 id="为什么不兼得"><a href="#为什么不兼得" class="headerlink" title="为什么不兼得"></a>为什么不兼得</h3><p>在重启的情况下，如果AOF和RDB都启用了，Redis将会使用AOF来重建数据，因为AOF是最完整的，一般的话会速度优先，即RDB优先</p>
+<h3 id="Forking"><a href="#Forking" class="headerlink" title="Forking"></a>Forking</h3><p>如何在Redis这种单线程应用程序中实际取执行它</p>
+<p>没懂，没理解</p>
+<hr>
+<h1 id="Redis常见面试题"><a href="#Redis常见面试题" class="headerlink" title="Redis常见面试题"></a>Redis常见面试题</h1><h2 id="认识Redis"><a href="#认识Redis" class="headerlink" title="认识Redis"></a>认识Redis</h2><h3 id="什么是Redis-1"><a href="#什么是Redis-1" class="headerlink" title="什么是Redis"></a>什么是Redis</h3><p>Redis是一种基于内存的数据库，内存数据库，对数据的读写操作都是在内存中完成的，所以读写速度非常快，常用于<strong>缓存、消息队列、分布式锁等场景</strong></p>
+<p>Redis提供了多种数据类型来支持不同的业务场景，比如字符串String、哈希Hash、列表List、集合Set、有序集合ZSet、位图Bitmaps、基数统计HyperLogLog、地理信息GEO、流Stream，并且对数据类型的操作都是原子性的，因为执行命令是由单线程负责的，不存在并发竞争的问题</p>
+<p>Redis还支持<strong>事务、持久化、Lua脚本、多种集群方案(主从复制、哨兵模式、切片集群模式)、发布&#x2F;订阅模式，内存淘汰机制、过期删除机制等</strong></p>
+<hr>
+<h3 id="Redis和Memcachaed的区别"><a href="#Redis和Memcachaed的区别" class="headerlink" title="Redis和Memcachaed的区别"></a>Redis和Memcachaed的区别</h3><p>&#x3D;&#x3D;共同点&#x3D;&#x3D;</p>
+<ul>
+<li>两者都是基于内存的数据库，内存数据库，一般都用来当作缓存使用</li>
+<li>都有过期策略</li>
+<li>两者的性能都非常高</li>
+</ul>
+<p>&#x3D;&#x3D;区别&#x3D;&#x3D;</p>
+<ul>
+<li>Redis支持的数据类型更丰富，而Memcached只支持最简单的key-value数据类型</li>
+<li>Redis支持持久化，可以将内存中的数据保持到磁盘中，那么redis重启的时候就可以再次加载进行使用，不会导致数据的丢失，而memcachaed没有持久化功能，数据全部都存在内存中，Memcached重启或则宕机之后数据全部都会丢失</li>
+<li>Redis原生支持集群模式，Memcached没有原生的集群模式，需要依靠客户端来实现集群中分片写入数据</li>
+<li>Redis支持发布订阅模型、Lua脚本、事务等功能，Memcached是不支持的</li>
+</ul>
+<hr>
+<h3 id="为什么用Redis作为MySQL的缓存"><a href="#为什么用Redis作为MySQL的缓存" class="headerlink" title="为什么用Redis作为MySQL的缓存"></a>为什么用Redis作为MySQL的缓存</h3><p>&#x3D;&#x3D;主要是因为Redis具有高性能、高并发的特性&#x3D;&#x3D;</p>
+<p><strong>Redis的高性能</strong><br>用户第一次访问MySQL中的某些数据的时候，Redis缓存中是没有的，所以需要去查询数据库，从硬盘上读取，所以这个过程很慢，性能很低，但是查询到数据之后会把这些数据存到Redis缓存中，那么下一次如果还是访问这些数据就可以直接从缓存中获取，操作Redis缓存就是直接对内存进行操作，速度很快</p>
+<p>如果MySQL数据库中的数据发生了改变，而且这些数据在Redis缓存中也有，那么就要同步改变Redis缓存中的数据，<code>但是和涉及到Redis和MySQL双写一致性的问题，后面会讲</code></p>
+<p><strong>Redis的高并发</strong><br>单台设备的Redis的QPS<code>Query Per Second,每秒处理完成请求的次数</code>是MySQL的10倍，Redis单机的QPS可以轻松破10w，而MySQL单机的QPS很难破1w</p>
+<p>所以直接访问Redis能够承受的请求数量是远远大于直接去访问MySQL的，所以我们可以考虑把MySQL数据库中的部分数据转移到缓存中，那么用户的一部分请求就会直接到Redis缓存中，不需要去MySQL数据库中</p>
+<hr>
+<h2 id="Redis数据结构"><a href="#Redis数据结构" class="headerlink" title="Redis数据结构"></a>Redis数据结构</h2><h3 id="Redis的数据类型以及使用场景分别是什么"><a href="#Redis的数据类型以及使用场景分别是什么" class="headerlink" title="Redis的数据类型以及使用场景分别是什么"></a>Redis的数据类型以及使用场景分别是什么</h3><p>Redis常见的物质数据类型：String字符串、Hash哈希、Set集合、ZSet有序集合、List列表</p>
+<p>Redis的key-value结构的数据库，左边是key，右边对应的是value</p>
+<blockquote>
+<p><img src="/./redis%E5%85%AB%E8%82%A1.assets/image-20260314234842169.png" alt="image-20260314234842169"></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>结构类型</th>
+<th>结构存储的值</th>
+<th>结构的读写能力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String字符串</td>
+<td>字符串、浮点数、整数</td>
+<td>对整个字符串或字符串的一部分进行操作，对整数或浮点数进行自增或自减操作</td>
+</tr>
+<tr>
+<td>List列表</td>
+<td>一个链表，链表上的每个节点都包含一个字符串</td>
+<td>对链表两端进行push和pop操作，读取单个或多个元素，根据值查找或删除元素</td>
+</tr>
+<tr>
+<td>Set集合</td>
+<td>包括字符串的无序集合</td>
+<td>字符串的集合，包含的方法有：看是否存在添加、删除、获取，还包含计算交集、并集、差集等</td>
+</tr>
+<tr>
+<td>Hash哈希</td>
+<td>包含键值对的无序散列表</td>
+<td>包含方法有添加、获取、删除单个元素</td>
+</tr>
+<tr>
+<td>ZSet有序集合</td>
+<td>和散列已有，用于存储键值对</td>
+<td>字符串成员和浮点数分数之间的有序映射，元素的排序顺序由分数大小决定，包含方法有添加、获取、删除单个元素及根据分值范围或成员来获取元素</td>
+</tr>
+</tbody></table>
+<p>随着Redis版本更新，后续又更新了BitMap<code>2.2版新增</code>、HyperLogLog<code>2.8版新</code>、GEO<code>3.2版新增</code>、Stream<code>5.0版新增</code></p>
+<p><strong>主要的应用场景有：</strong></p>
+<ul>
+<li>String：缓存对象，常规计算，分布式锁，共享session信息等</li>
+<li>List：消息队列<code>但是生产者需要自行实现全局唯一ID，并且不能以消费组形式消费数据</code>等</li>
+<li>Hash：缓存对象，购物车等</li>
+<li>Set：聚合计算<code>交集、并集、差集</code>，比如点赞，共同关注，抽奖活动</li>
+<li>ZSet：排序场景，比如排行榜，电话，姓名排序</li>
+<li>BitMap：二值状态统计的场景，比如签到、判断用户登录状态、连续签到用户总数等</li>
+<li>HyperLogLog：海量数据基数统计场景，不如百万级网页UV计数</li>
+<li>GEO：存储地理位置信息的场景，比如嘀嘀打车</li>
+<li>Stream：消息队列，相比于List实现消息队列，Stream有两个特有的特性：自动生成全局唯一消息ID，支持以消费组形式消费数据</li>
+</ul>
+<hr>
+<h3 id="五种常见的Redis数据类型是怎么实现的"><a href="#五种常见的Redis数据类型是怎么实现的" class="headerlink" title="五种常见的Redis数据类型是怎么实现的"></a>五种常见的Redis数据类型是怎么实现的</h3><blockquote>
+<p>String类型的内部实现</p>
+</blockquote>
+<p>String类型的底层的数据结构实现主要是SDS<code>简单动态字符串</code>。SDS和C字符串不太一样，因为SDS相比于C的原生字符串：</p>
+<ul>
+<li>**SDS不仅可以保存文本数据，还可以保存二进制数据。**因为SDS使用len属性的值而不是空字符串来判断字符串是否结束，并且SDS的所有API都会以处理二进制的方式来处理SDS存放在buf[]数组里的数据，所以SDS不仅可以存放文本数据，还能保存图片、音频、视频、压缩文件这样的二进制数据</li>
+<li>**SDS获取字符串的长度的时间复杂度是O(1)。**因为C语言的字符串不会记录自身长度，所以获取字符串的长度的时间复杂度是O(n)，SDS结构里使用了len属性记录了字符串的长度所以时间复杂度是O(1)</li>
+<li>**Redis的SDS API是安全的，拼接字符串不会造成缓冲区溢出。**所以SDS在拼接字符串之前检查SDS空间是否满足要求，如果空间不够会自动扩容，所以不会导致缓存区溢出的问题</li>
+</ul>
+<p>&#x3D;&#x3D;所以不使用C语言的原生字符串来表示，使用SDS结构来表示&#x3D;&#x3D;</p>
+<blockquote>
+<p>List类型内部实现</p>
+</blockquote>
+<p>List类型的底层数据结构是由双向链表或压缩列表实现的:</p>
+<ul>
+<li>如果列表的元素个数小于512个(默认值，可通过list-max-ziplist-entries配置)，列表的元素的值都小于64字节(默认值，可以通过list-max-ziplist-value配置)，那么Redis会使用<strong>压缩列表</strong>作为List类型的底层数据结构</li>
+<li>如果列表的元素不满足上面条件，Redis就使用<strong>双向链表</strong>作为list类型的底层数据结构</li>
+</ul>
+<p>&#x3D;&#x3D;但是在Redis3.2版本之后，List数据类型的底层数据结构就只由quicklist实现，替代了双向链表和压缩列表&#x3D;&#x3D;</p>
+<blockquote>
+<p>Hash类型内部实现</p>
+</blockquote>
+<p>Hash类型的底层数据结构是由<strong>压缩列表或哈希表</strong>实现的</p>
+<ul>
+<li>如果哈希类型元素个数小于512个(默认值，可通过hash-max-ziplist-entries配置)，所有值小于64字节(可通过hash-max-ziplist-value配置)，那么Redis就会使用<strong>压缩列表</strong>作为Hash类型的底层数据结构</li>
+<li>如果哈希类型元素不满足上面条件，Redis会使用<strong>哈希表</strong>作为Hash类型的底层数据结构</li>
+</ul>
+<p>&#x3D;&#x3D;在Redis7.0中，压缩列表数据结构已经被废弃了，交给listpack数据结构来实现了，所有由listpack和哈希表数据结构来实现&#x3D;&#x3D;</p>
+<blockquote>
+<p>Set类型内部实现</p>
+</blockquote>
+<p>Set类型的底层数据结构是由<strong>哈希表或整数集合</strong>实现的</p>
+<ul>
+<li>如果集合中的元素都是整数且元素个数小于512个(默认值， set-maxintset-entries配置)，Redis会使用<strong>整数集合</strong>作为Set类型的底层数据结构</li>
+<li>如果集合中的元素不满足上面条件，则Redis会使用<strong>哈希表</strong>作为Set类型的底层数据结构</li>
+</ul>
+<blockquote>
+<p>ZSet类型内部实现</p>
+</blockquote>
+<p>ZSet类型的底层数据结构是由<strong>压缩列表或跳表</strong>实现的</p>
+<ul>
+<li>如果有序集合的元素个数小于128个，并且每个元素的值都小于64字节，那么Redis就会使用<strong>压缩列表</strong>作为ZSet类型的底层数据结构</li>
+<li>如果有序集合的元素不符合上面条件，那么Redis会使用<strong>跳表</strong>作为ZSet类型的底层数据结构</li>
+</ul>
+<p>&#x3D;&#x3D;在Redis7.0中，压缩列表数据结构被废弃了，由listpack数据结构来实现&#x3D;&#x3D;</p>
+<hr>
+<h2 id="Redis线程模型"><a href="#Redis线程模型" class="headerlink" title="Redis线程模型"></a>Redis线程模型</h2><h3 id="Redis是单线程的吗"><a href="#Redis是单线程的吗" class="headerlink" title="Redis是单线程的吗"></a>Redis是单线程的吗</h3><p><strong>Redis单线程指的是：接收前端客户端发生的请求-&gt;解析请求-&gt;进行数据读写等操作-&gt;返回数据给客户端，这个过程是由一个线程(主线程)来完成的</strong>，这也是我们经常说Redis是单线程的原因，但是，<strong>Redis不是单线程的</strong>。Redis在启动的时候是会启动后台主线程(BIO)的：</p>
+<ul>
+<li>Redis在2.6版本，会启动2个后台线程，分别处理文件关闭、AOF刷盘这两个任务</li>
+<li>Redis4.0版本之后，会起到3个后台线程，新增了一个后台线程，这个后台线程就是lazyfree线程<code>例如：执行unlink key / flushdb async / flushall async等命令会把这些删除操作交给后台线程执行，这样子不会导致Redis主线程卡顿</code>所以当我们需要删除一个大key的时候不要使用del命令删除，因为del命令是在Redis主线程中执行的，这样会导致Redis主线程卡顿，我们要使用unlink命令来异步删除ksy，交给后台线程进行处理</li>
+</ul>
+<p>Redis中这些关闭文件、AOF刷盘、释放内存这些任务创建单独的线程去处理是因为这些任务操作很耗时，如果放到Redis主线程中进行处理，就会导致Redis主线程很容易阻塞、卡顿，使得无法处理后续请求</p>
+<p>后台线程就相当于是消费者，生产者把耗时的任务丢到任务队列中，然后消费者BIO就会不停轮询这个队列，从这个队列中取出任务去执行对应的方法</p>
+<p>三个任务都有自己对应的任务队列</p>
+<ul>
+<li>BIO_CLOSE_FILE。关闭文件任务队列：当队列有任务后，后台线程会调用close(fd)，将文件关闭</li>
+<li>BIO_AOF_FSYNC，AOF刷盘任务队列：当AOF日志配置成everysec选项后，主线程会把AOF写日志操作封装成一个任务，然后放到队列中，当发现队列有任务后，后台线程会调用fysnc(fd)，将AOF文件刷盘</li>
+<li>BIO_LAZY_FREE，lazyfree任务队列：当队列有任务后，后台线程会free(obj)释放对象 &#x2F; free(dict)删除数据库所有对象 &#x2F; free(skiplist)释放跳表对象</li>
+</ul>
+<hr>
+<h3 id="Redis单线程模式是怎么样的"><a href="#Redis单线程模式是怎么样的" class="headerlink" title="Redis单线程模式是怎么样的"></a>Redis单线程模式是怎么样的</h3><blockquote>
+<p><img src="/./redis%E5%85%AB%E8%82%A1.assets/image-20260315233626314.png" alt="image-20260315233626314"></p>
+</blockquote>
+<p>图中浅蓝色部分是一个事件循环、由主线程负责的，可以看到网络IO和命令处理都是单线程的</p>
+<p>Redis在初始化的时候，会做下面这几件事：</p>
+<ul>
+<li>首先，调用epoll_create()创建一个epoll对象和调用socket()创建一个服务端socket</li>
+<li>然后，调用bind()绑定端口和调用listen()监听该socket</li>
+<li>然后，调用epoll_ctl()将listen socket加入到epoll，同时注册连接事件处理函数</li>
+</ul>
+<p>初始化结束后，主线程进入到一个事件循环函数，就是进入浅蓝色部分，主要会做：</p>
+<ul>
+<li>首先调用处理发生队列函数，看发生队列里是否有任务，如果有发送任务，就通过write函数将客户端发送缓存区里的数据发送出去，如果这一轮数据没有发送完，就会注册写事件处理函数，等待epoll_wait发现可写后进行处理</li>
+<li>接着调用epoll_wait函数等待事件的到来：<ul>
+<li>如果是连接事件，会调用连接事件处理函数，该函数会做：调用accpet获取已连接的socket-&gt;调用epoll_ctl将已连接的socket加入到epoll中-&gt;注册读事件处理函数</li>
+<li>如果是读事件，会调用读事件处理函数，该函数会做：调用read获取客户端发送的数据-&gt;解析命令-&gt;处理命令-&gt;将客户端对象添加到发送队列中-&gt;将执行结果写到发送缓存区中等待发送</li>
+<li>如果是写事件，会调用写事件处理函数，该函数会做：通过write函数将客户端发送到缓存区中的数据发送出去，如果这一轮数据没有发送完，就会继续注册写事件处理函数，等待epoll_wait的发现可写后继续进行处理，继续进行发送数据</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="Redis采用单线程为什么还这么快"><a href="#Redis采用单线程为什么还这么快" class="headerlink" title="Redis采用单线程为什么还这么快"></a>Redis采用单线程为什么还这么快</h3><p>&#x3D;&#x3D;官方测试数据：单线程的Redis吞吐量可以达到每秒10w&#x3D;&#x3D;</p>
+<p>Redis采用单线程(网络I&#x2F;O和执行命令)这么快的原因是：</p>
+<ul>
+<li>Redis的大部分操作都是<strong>在内存中完成的</strong>，并且采用了高效的数据结构，因此Redis瓶颈可能是机器的内存或网络宽带，而并不是CPU，既然CPU不是瓶颈，那么自然就采用单线程的解决方案了</li>
+<li>Redis采用单线程模型还可以<strong>避免多线程之间的竞争</strong>，省去了多线程切换带来的时间和性能的开销，而且不会导致死锁的问题</li>
+<li>Redis采用了<strong>I&#x2F;O多路复制机制</strong>处理大量的客户端Socket请求，IO多路复用机制是指一个线程处理多个IO流，就是我们经常听到的select&#x2F;epoll机制。简单来说在Redis只运行单线程的情况下，该机制允许内核中同时存在多个监听Socket和已连接Socket。内核会一直监听这些Socket上的连接请求或数据请求。一旦有请求到达，就会交给Redis线程处理，这就实现了一个Redis线程处理多个IO流的效果</li>
+</ul>
+<hr>
+<h3 id="Redis6-0之前为什么使用单线程"><a href="#Redis6-0之前为什么使用单线程" class="headerlink" title="Redis6.0之前为什么使用单线程"></a>Redis6.0之前为什么使用单线程</h3><p>因为CPU不是制约Redis性能的核心瓶颈，制约Redis性能的瓶颈更多是机器内存的大小和网络I&#x2F;O的限制，所以Redis使用单线程是可以的，如果要使用服务的多核CPU，可以在一台服务器上启动多个节点或采用分片集群的方式</p>
+<p>而且使用单线程之后可维护性高了，多线程模型虽然在某些方面表现优异，但是它却引入了程序执行顺序的不确定性，带来了并发读写的一系列问题，增加了系统复杂度，同时可能存在线程切换、加锁解锁、死锁造成的性能损失等问题</p>
+<hr>
+<h3 id="Redis6-0之后引入多线程呢"><a href="#Redis6-0之后引入多线程呢" class="headerlink" title="Redis6.0之后引入多线程呢"></a>Redis6.0之后引入多线程呢</h3><p>由于在<strong>Redis6.0版本之后，采用了多个I&#x2F;O线程来处理网络请求</strong>，是因为随着网络硬件的提升，Redis的性能瓶颈有时候会出现在网络I&#x2F;O的处理上</p>
+<p>所以为了提高网络I&#x2F;O的并行度，Redis6.0对于网络I&#x2F;O采用多线程处理，<strong>但是对于执行命令Redis仍然使用单线程来处理</strong></p>
+<p>Redis6.0版本之后支持的I&#x2F;O多线程特性，默认情况下I&#x2F;O多线程只针对发送响应数据(write client socket)，并不会以多线程的方式处理读请求(read client socket)。想要开启多线程处理客户端读请求需要把Redis.conf配置文件的io-threads-do-reads配置项设为yes</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 设置读请求也能使用io多线程</span><br><span class="line">io-threads-<span class="keyword">do</span>-reads yes</span><br></pre></td></tr></table></figure>
+
+
+
+<p>而且，Redis.conf配置我呢见中提供了IO多线程个数的配置项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># io-threads N</span></span><br><span class="line"><span class="comment"># 表示启用N-1个I/O多线程</span></span><br><span class="line"><span class="comment"># 记住，主线程也算一个I/O线程，也是计算在这N-1个线程中的</span></span><br><span class="line">io-threads 4</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>关于线程数的配置，官方建议是如果4核的CPU，建议线程数设置2或3</p>
+<p>如果是8核的CPU建议线程数设置成6</p>
+<p>线程数一定要小于机器核数，线程数不是越大越好的</p>
+</blockquote>
+<p>Redis6.0版本后，Redis在启动时默认情况下会<strong>额外创建6个线程，这6个线程不包括主线程</strong></p>
+<blockquote>
+<p>Redis-server：Redis的主线程，主要负责执行命令</p>
+<p>bio_close_file、bio_aof_fsync、bio_lazy_free：三个后台线程，分别异步处理关闭文件任务、AOF刷盘任务、释放内存任务</p>
+<p>io_thd_1、io_thd_2、io_thd_3：三个I&#x2F;O线程，io_threads默认是4，所以会启动3个I&#x2F;O多线程，用来分担Redis网络I&#x2F;O压力</p>
+</blockquote>
+<hr>
+<h2 id="Redis持久化"><a href="#Redis持久化" class="headerlink" title="Redis持久化"></a>Redis持久化</h2><h3 id="Redis如何实现数据不丢失呢"><a href="#Redis如何实现数据不丢失呢" class="headerlink" title="Redis如何实现数据不丢失呢"></a>Redis如何实现数据不丢失呢</h3><p>Redis的读写操作都是在内存中进行的，所以Redis性能才会高，但是当Redis重启后，内存中的数据就会丢失，为了保证内存中的数据不会丢失，Redis就实现了数据持久化的机制，这个机制会把在内存中的数据存储到磁盘中，那么Redis即使重启了也能从磁盘中恢复原有的数据</p>
+<p><strong>Redis一共有三种数据持久化的方式：</strong></p>
+<ul>
+<li>AOF日志：每执行一条写操作命令就会把该命令以追加的方式写入到一个文件中</li>
+<li>RDB快照：将某一时刻的内存数据，以二进制的方式写入磁盘</li>
+<li>混合持久化方式：Redis4.0新增的方式，集成了AOF和RDB的优点</li>
+</ul>
+<hr>
+<h3 id="AOF日志是如何实现的？"><a href="#AOF日志是如何实现的？" class="headerlink" title="AOF日志是如何实现的？"></a>AOF日志是如何实现的？</h3>
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>感谢主播打赏<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2026" class="archive-year">2026</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/18/redis/" class="archive-article-date">
-  	<time datetime="2026-03-18T11:30:33.907Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-18</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2026/03/18/redis/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/02/08/hello-world/" class="archive-article-date">
-  	<time datetime="2026-02-08T13:54:50.088Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-02-08</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2026/02/08/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/02/08/hello-world/">Hello</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "http://example.com/2026/03/18/redis/",
+  owner: 'JunLa-0',
+  repo: 'JunLa-comment',
+  oauth: {
+    client_id: 'Ov23li7o4ekykqWOFNQx',
+    client_secret: '3c8d860e4a7cd8c5b00f7316995533971403adc0',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+  
 
 
           </div>
@@ -234,8 +604,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
